@@ -1,0 +1,13 @@
+fastapi
+
+pdf2image
+pillow
+requests
+
+python-dotenv
+
+openai
+
+pydantic
+
+
