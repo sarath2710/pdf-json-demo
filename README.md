@@ -11,7 +11,7 @@ This project extracts text from PDF documents, processes them with AI models, an
 
 ---
 
-## 🔑 API Keys Setup
+## API Keys Setup
 
 You need two API keys. Create a `.env` file in the project root and add:
 
@@ -36,7 +36,7 @@ pdf-json-demo/
 
 ---
 
-## ▶️ Usage
+##  Usage
 
 ### Run main script
 
@@ -51,7 +51,7 @@ python main.py
 
 ---
 
-## ✅ Example Output
+## Example Output
 
 ```json
 {
