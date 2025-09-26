@@ -23,6 +23,16 @@ RAPIDAPI_KEY=your_rapidapi_key_here
 # OpenAI API (for LLM processing)
 OPENAI_API_KEY=your_openai_api_key_here
 ```
+pdf-json-demo/
+│── main.py               # Entry point: orchestrates PDF → OCR → LLM → JSON
+│── image_text.py         # Handles converting PDF pages to images, sending to OCR
+│── llm_processor.py      # Contains logic to call LLM (OpenAI) for classification & JSON extraction
+│── models.py              # Pydantic schemas (Invoice, Declaration, nested models)
+│── prompt_detect.txt     # LLM prompt to detect whether doc is invoice or declaration
+│── prompt_invoice.txt     # LLM prompt + examples for invoice extraction
+│── prompt_declaration.txt # LLM prompt + examples for declaration extraction
+│── requirements.txt       # List of Python dependencies
+│── .env                    # Environment file holding API keys (not committed)
 
 ---
 
