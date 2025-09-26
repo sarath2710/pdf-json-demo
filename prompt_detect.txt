@@ -1,0 +1,5 @@
+You are a classifier. Determine whether the following text is an "Invoice" or a "Declaration". 
+Respond with only one word: Invoice or Declaration.
+
+Text:
+{input_text}
