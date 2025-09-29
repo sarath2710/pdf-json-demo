@@ -39,12 +39,67 @@ def clean_json(raw_text: str) -> str:
         return match.group(1).strip()
     return raw_text.strip()
 
-def extract_structured(input_text: str) -> dict:
-    """Send text to the right prompt and validate with Pydantic"""
+# def extract_structured(input_text: str) -> dict:
+#     """Send text to the right prompt and validate with Pydantic"""
+#     doc_type = classify_text(input_text)
+
+#     if doc_type.lower() == "declaration":
+#         prompt = load_prompt("prompt_declaration.txt").replace("{input_text}", input_text)
+
+#         response = client.chat.completions.create(
+#             model="gpt-4o-mini",
+#             messages=[
+#                 {"role": "system", "content": "Return ONLY valid JSON. Do not add explanations or code fences."},
+#                 {"role": "user", "content": prompt}
+#             ],
+#             temperature=0
+#         )
+
+#         raw_json = response.choices[0].message.content.strip()
+#         raw_json = clean_json(raw_json)
+
+#         try:
+#             data = json.loads(raw_json)
+#             return Declaration(**data).model_dump()
+#         except (json.JSONDecodeError, ValidationError) as e:
+#             raise ValueError(f"Failed to validate Declaration: {e}\nRaw output:\n{raw_json}")
+
+#     elif doc_type.lower() == "invoice":
+#         prompt = load_prompt("prompt_invoice.txt").replace("{input_text}", input_text)
+
+#         response = client.chat.completions.create(
+#             model="gpt-4o-mini",
+#             messages=[
+#                 {"role": "system", "content": "Return ONLY valid JSON. Do not add explanations or code fences."},
+#                 {"role": "user", "content": prompt}
+#             ],
+#             temperature=0
+#         )
+
+#         raw_json = response.choices[0].message.content.strip()
+#         raw_json = clean_json(raw_json)
+
+#         try:
+#             data = json.loads(raw_json)
+#             return Invoice(**data).model_dump()
+#         except (json.JSONDecodeError, ValidationError) as e:
+#             raise ValueError(f"Failed to validate Invoice: {e}\nRaw output:\n{raw_json}")
+
+#     else:
+#         raise ValueError(f"Unknown document type: {doc_type}")
+
+def extract_structured(input_text: str, prompt_template: str = None) -> dict:
+    """
+    Send text + optional prompt template to LLM and validate with Pydantic.
+    If no prompt_template is given, it will load from file automatically
+    depending on document type.
+    """
     doc_type = classify_text(input_text)
 
     if doc_type.lower() == "declaration":
-        prompt = load_prompt("prompt_declaration.txt").replace("{input_text}", input_text)
+        prompt = (
+            prompt_template or load_prompt("prompt_declaration.txt")
+        ).replace("{input_text}", input_text)
 
         response = client.chat.completions.create(
             model="gpt-4o-mini",
@@ -65,7 +120,9 @@ def extract_structured(input_text: str) -> dict:
             raise ValueError(f"Failed to validate Declaration: {e}\nRaw output:\n{raw_json}")
 
     elif doc_type.lower() == "invoice":
-        prompt = load_prompt("prompt_invoice.txt").replace("{input_text}", input_text)
+        prompt = (
+            prompt_template or load_prompt("prompt_invoice.txt")
+        ).replace("{input_text}", input_text)
 
         response = client.chat.completions.create(
             model="gpt-4o-mini",
